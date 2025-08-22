@@ -139,7 +139,7 @@ const Home = () => {
                   transition={{ delay: 1 }}
                   className="text-xl text-slate-600 dark:text-slate-300 mb-8"
                 >
-                  Passionate about creating exceptional digital experiences with modern technologies
+                  Focused on crafting scalable, accessible, and engaging applications powered by modern technologies like React and Azure.
                 </motion.p>
 
                 <motion.div

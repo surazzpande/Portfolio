@@ -10,6 +10,9 @@ const Contact = () => {
     message: ''
   });
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -18,11 +21,70 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Form submission logic here
-    setOpenSnackbar(true);
-    setFormData({ name: '', email: '', message: '' });
+    setIsSubmitting(true);
+
+    try {
+      // Validate form data
+      if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+        throw new Error('Please fill in all fields');
+      }
+
+      // Import EmailJS dynamically
+      const emailjs = await import('@emailjs/browser');
+      
+      // Initialize EmailJS
+      emailjs.default.init('O77b2fjbblXBJNi-8');
+      
+      console.log('Sending email with data:', {
+        from_name: formData.name,
+        from_email: formData.email,
+        message: formData.message,
+        to_name: 'Suraj Pandey'
+      });
+
+      // Send email using EmailJS
+      const result = await emailjs.default.send(
+        'service_3b65knx',
+        'template_mk3hyk5',
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+          to_name: 'Suraj Pandey',
+          reply_to: formData.email
+        },
+        'O77b2fjbblXBJNi-8'
+      );
+
+      console.log('EmailJS Response:', result);
+
+      setSnackbarMessage('Message sent successfully! I\'ll get back to you soon.');
+      setSnackbarSeverity('success');
+      setFormData({ name: '', email: '', message: '' });
+
+    } catch (error) {
+      console.error('Detailed Error:', error);
+      
+      let errorMessage = 'Failed to send message. ';
+      
+      if (error.text && error.text.includes('Gmail_API: Invalid grant')) {
+        errorMessage = 'Email service needs reconnection. Please contact me directly at surajpande20554@gmail.com while I fix this issue.';
+      } else if (error.text) {
+        errorMessage += `Error: ${error.text}`;
+      } else if (error.message) {
+        errorMessage += error.message;
+      } else {
+        errorMessage += 'Please try again or contact me directly at surajpande20554@gmail.com';
+      }
+      
+      setSnackbarMessage(errorMessage);
+      setSnackbarSeverity('error');
+    } finally {
+      setIsSubmitting(false);
+      setOpenSnackbar(true);
+    }
   };
 
   const contactInfo = [
@@ -123,15 +185,17 @@ const Contact = () => {
                       required
                       variant="outlined"
                     />
+                    
                     <Button
                       type="submit"
                       variant="contained"
                       color="primary"
                       size="large"
                       startIcon={<Send />}
+                      disabled={isSubmitting}
                       sx={{ mt: 3 }}
                     >
-                      Send Message
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
                     </Button>
                   </form>
                 </CardContent>
@@ -213,8 +277,8 @@ const Contact = () => {
         autoHideDuration={6000}
         onClose={() => setOpenSnackbar(false)}
       >
-        <Alert severity="success" onClose={() => setOpenSnackbar(false)}>
-          Message sent successfully! I'll get back to you soon.
+        <Alert severity={snackbarSeverity} onClose={() => setOpenSnackbar(false)}>
+          {snackbarMessage}
         </Alert>
       </Snackbar>
     </section>
