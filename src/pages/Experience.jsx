@@ -37,8 +37,8 @@ const Experience = () => {
       technologies: ['Warehouse Management Systems', 'Inventory Control', 'Quality Assurance']
     },
     {
-      title: 'Cleaner',
-      company: 'Heathrow Airport',
+      title: 'General Assistant',
+      company: 'Tiffany and Co.(via First Call Contract Services)',
       location: 'London, UK',
       duration: '2023 - Present',
       type: 'Part-time',
