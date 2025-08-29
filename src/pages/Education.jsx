@@ -21,10 +21,10 @@ const Education = () => {
       degree: 'BSc Computer Science & Information Technology',
       institution: 'Birendra Memorial College',
       year: '2020',
-      grade: 'First Class',
+      grade: '2nd Class',
       description: 'Comprehensive foundation in computer science principles, programming, and information systems.',
       achievements: [
-        'Banking Network Simulation (Final Year Project)',
+        'Ehaat E-commerce Website (Final Year Project)',
         'Database Management Systems',
         'Web Development Technologies',
         'Network Security Fundamentals'

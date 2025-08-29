@@ -22,7 +22,7 @@ const Experience = () => {
     },
     {
       title: 'Warehouse Operative',
-      company: 'EVRI & Asendia',
+      company: 'EVRI & Asendia (via First Call Contract Services)',
       location: 'UK',
       duration: '2024',
       type: 'Contract',
